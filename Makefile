@@ -11,7 +11,7 @@ DOCKERFILE = $(DOCKERFILE_DIR)/Dockerfile
 ARTIFACT_NAME = app.jar
 TARGET_DIR = $(PRODUCER_DIR)/target
 
-.PHONY: all build clean docker-build up down logs
+.PHONY: all build clean docker-build up down logs clean-docker
 
 # Default target to build everything
 all: build copy-artifact docker-build
@@ -43,3 +43,7 @@ down:
 # Tail logs from Docker Compose services
 logs:
 	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) logs -f
+
+# Clean up Docker images
+clean-docker:
+	$(DOCKER) rmi -f kafka-producer

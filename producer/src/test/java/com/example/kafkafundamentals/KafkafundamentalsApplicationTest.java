@@ -30,7 +30,7 @@ import io.javalin.testtools.JavalinTest;
 import okhttp3.Response;
 
 @Testcontainers
-class KafkafundamentalsApplicationTests {
+class KafkafundamentalsApplicationTest {
 
     @Container
     private static final KafkaContainer kafka = new KafkaContainer("apache/kafka");
@@ -39,8 +39,8 @@ class KafkafundamentalsApplicationTests {
 
     @BeforeAll
     static void setUp() throws ExecutionException, InterruptedException {
-        final Config config =
-                ConfigFactory.load().withValue("kafka.bootstrap.servers", fromAnyRef(kafka.getBootstrapServers()));
+        System.setProperty("KAFKA_BOOTSTRAP_SERVERS", kafka.getBootstrapServers());
+        final Config config = ConfigFactory.load();
         topic = config.getString("kafka.topic");
         createTopic(kafka.getBootstrapServers(), topic);
 

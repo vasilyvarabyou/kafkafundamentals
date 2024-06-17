@@ -12,9 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import com.example.kafkafundamentals.dto.Transaction;
 import io.javalin.http.Context;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RequiredArgsConstructor(access = PRIVATE)
 public class TransactionsHandler {
 
