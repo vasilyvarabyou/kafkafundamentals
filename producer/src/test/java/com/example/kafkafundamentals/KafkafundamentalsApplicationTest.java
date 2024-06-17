@@ -7,8 +7,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static com.example.kafkafundamentals.KafkafundamentalsApplication.createJavalinApp;
 import static com.example.kafkafundamentals.util.TestKafkaHelpers.transactionConsumer;
-import static com.typesafe.config.ConfigValueFactory.fromAnyRef;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

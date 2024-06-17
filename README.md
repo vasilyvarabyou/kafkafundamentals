@@ -11,6 +11,7 @@
 - `up`: Brings up the Docker Compose services.
 - `down`: Brings down the Docker Compose services.
 - `logs`: Tails the logs from the Docker Compose services.
+- `clean-docker`: Removes docker images
 
 ## Usage
 
@@ -39,4 +40,11 @@ make down
 To tail the logs from the Docker Compose services, run:
 ```sh
 make logs
+```
+
+### Remove Docker images
+
+TO clean up docker images
+```sh
+make clean-docker
 ```
