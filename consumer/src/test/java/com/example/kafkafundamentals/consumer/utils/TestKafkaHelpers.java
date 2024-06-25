@@ -18,7 +18,7 @@ public class TestKafkaHelpers {
         properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getCanonicalName());
         properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class.getCanonicalName());
         // properties.setProperty(ProducerConfig.COMPRESSION_TYPE_CONFIG, "none");
-        properties.setProperty(ProducerConfig.ACKS_CONFIG, "all");
+        properties.setProperty(ProducerConfig.ACKS_CONFIG, "1");
         // properties.setProperty("batch.size", "0");
         return new KafkaProducer<>(properties);
 

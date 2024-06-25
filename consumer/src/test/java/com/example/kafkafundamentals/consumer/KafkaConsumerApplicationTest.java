@@ -1,17 +1,21 @@
 package com.example.kafkafundamentals.consumer;
 
 import static com.example.kafkafundamentals.consumer.KafkaConsumerApplication.*;
+import static io.javalin.http.HttpStatus.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.rnorth.ducttape.unreliables.Unreliables;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -39,7 +43,6 @@ public class KafkaConsumerApplicationTest {
         final Config config = ConfigFactory.load();
         topic = config.getString("kafka.topic");
         createTopic(kafka.getBootstrapServers(), topic);
-        System.out.println(kafka.getBootstrapServers());
 
         app = createJavalinApp(config);
     }
@@ -52,17 +55,23 @@ public class KafkaConsumerApplicationTest {
         }
     }
 
-    // @Test
+    @Test
     void shouldGetTransactionFromTopic() throws InterruptedException, ExecutionException {
         Transaction expected = Transaction.builder().bank("Bank").build();
 
         JavalinTest.test(app, (app, client) -> {
             try (Producer<String, Transaction> producer = TestKafkaHelpers.transactionProducer(kafka.getBootstrapServers());) {
-                System.out.println("!!!!!!!!!!!!! " + producer.send(new ProducerRecord<String,Transaction>(topic, expected)).get());
+                producer.send(new ProducerRecord<String,Transaction>(topic, expected)).get();
             }
-            Response response = client.get("/transactions");
-            assertTrue(response.isSuccessful());
-            JSONAssert.assertEquals("[{\"bank\": \"Bank\"}]", response.body().string(), false);
+            Unreliables.retryUntilTrue(10, TimeUnit.SECONDS, () -> {
+                final Response response = client.get("/transactions");
+                if (response.code() == NO_CONTENT.getCode()) {
+                    return false;
+                }
+                assertTrue(response.isSuccessful());
+                JSONAssert.assertEquals("[{\"bank\": \"Bank\"}]", response.body().string(), false);
+                return true;
+            });
         });
     }
 }

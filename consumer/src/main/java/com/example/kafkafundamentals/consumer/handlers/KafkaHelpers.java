@@ -22,7 +22,8 @@ public class KafkaHelpers {
             properties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, servers);
             properties.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getCanonicalName());
             properties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class.getCanonicalName());
-            properties.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");
+            properties.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+            properties.put("JsonClass", Transaction.class);
             return new KafkaConsumer<>(properties);
         } catch (UnknownHostException e) {
             throw new RuntimeException("Unable to set up kafka consumer", e);

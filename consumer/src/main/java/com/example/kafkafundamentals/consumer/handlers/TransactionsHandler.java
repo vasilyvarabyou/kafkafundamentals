@@ -26,7 +26,7 @@ public class TransactionsHandler {
     public void getTransactions(final @NotNull Context ctx) throws ExecutionException, InterruptedException {
         final Iterable<ConsumerRecord<String, Transaction>> records = consumer.poll(ofMillis(100));
         final List<Transaction> result = stream(records.spliterator(), false).map(r -> r.value()).collect(toList());
-        ctx.json(result).status(OK);
+        ctx.json(result).status(result.isEmpty() ? NO_CONTENT : OK);
     }
 
     public static TransactionsHandler create(final Consumer<String, Transaction> consumer) {
