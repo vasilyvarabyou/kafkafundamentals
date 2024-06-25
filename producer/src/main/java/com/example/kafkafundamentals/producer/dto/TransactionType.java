@@ -1,4 +1,4 @@
-package com.example.kafkafundamentals.dto;
+package com.example.kafkafundamentals.producer.dto;
 
 public enum TransactionType {
     INCOME,

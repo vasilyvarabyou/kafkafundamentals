@@ -1,18 +1,15 @@
-package com.example.kafkafundamentals.handlers;
+package com.example.kafkafundamentals.producer.handlers;
 
-import static org.apache.kafka.clients.producer.ProducerConfig.ACKS_CONFIG;
-import static org.apache.kafka.clients.producer.ProducerConfig.BOOTSTRAP_SERVERS_CONFIG;
-import static org.apache.kafka.clients.producer.ProducerConfig.CLIENT_ID_CONFIG;
-import static org.apache.kafka.clients.producer.ProducerConfig.COMPRESSION_TYPE_CONFIG;
-import static org.apache.kafka.clients.producer.ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG;
-import static org.apache.kafka.clients.producer.ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG;
+import static org.apache.kafka.clients.producer.ProducerConfig.*;
 
 import java.util.Properties;
+
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.common.serialization.StringSerializer;
-import com.example.kafkafundamentals.dto.Transaction;
-import com.example.kafkafundamentals.serdeser.JsonSerializer;
+
+import com.example.kafkafundamentals.producer.dto.Transaction;
+import com.example.kafkafundamentals.producer.serdeser.JsonSerializer;
 
 public class KafkaHelpers {
 

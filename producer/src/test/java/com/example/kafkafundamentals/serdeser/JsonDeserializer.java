@@ -1,4 +1,4 @@
-package com.example.kafkafundamentals.consumer.serdeser;
+package com.example.kafkafundamentals.serdeser;
 
 import java.io.IOException;
 import java.util.Map;

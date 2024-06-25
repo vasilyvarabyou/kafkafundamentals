@@ -6,10 +6,8 @@ DOCKER_COMPOSE = docker-compose
 DOCKER = docker
 DOCKERFILE_DIR = docker
 PRODUCER_DIR = producer
+CONSUMER_DIR = consumer
 DOCKER_COMPOSE_FILE = $(DOCKERFILE_DIR)/docker-compose.yml
-DOCKERFILE = $(DOCKERFILE_DIR)/Dockerfile
-ARTIFACT_NAME = app.jar
-TARGET_DIR = $(PRODUCER_DIR)/target
 
 .PHONY: all build clean docker-build up down logs clean-docker
 
@@ -19,18 +17,22 @@ all: build copy-artifact docker-build
 # Build the Maven project
 build:
 	$(MVN) -f $(PRODUCER_DIR)/pom.xml clean install
+	$(MVN) -f $(CONSUMER_DIR)/pom.xml clean install
 
 # Clean the Maven project
 clean:
 	$(MVN) -f $(PRODUCER_DIR)/pom.xml clean
+	$(MVN) -f $(CONSUMER_DIR)/pom.xml clean
 
 # Copy the built artifact to the Docker context
 copy-artifact: build
-	cp $(TARGET_DIR)/$(ARTIFACT_NAME) $(DOCKERFILE_DIR)/producer/$(ARTIFACT_NAME)
+	cp $(PRODUCER_DIR)/target/app.jar $(DOCKERFILE_DIR)/producer/app.jar
+	cp $(CONSUMER_DIR)/target/app.jar $(DOCKERFILE_DIR)/consumer/app.jar
 
 # Build the Docker image
 docker-build: copy-artifact
-	$(DOCKER) build -t kafka-producer $(DOCKERFILE_DIR)
+	$(DOCKER) build -t kafka-producer $(DOCKERFILE_DIR)/producer
+	$(DOCKER) build -t kafka-consumer $(DOCKERFILE_DIR)/consumer
 
 # Bring up the Docker Compose services
 up:
@@ -46,4 +48,4 @@ logs:
 
 # Clean up Docker images
 clean-docker:
-	$(DOCKER) rmi -f kafka-producer
+	$(DOCKER) rmi -f kafka-producer kafka-consumer

@@ -1,9 +1,11 @@
-package com.example.kafkafundamentals.serdeser;
+package com.example.kafkafundamentals.consumer.serdeser;
 
 import java.io.IOException;
 import java.util.Map;
+
 import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.serialization.Deserializer;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JsonDeserializer<T> implements Deserializer<T> {

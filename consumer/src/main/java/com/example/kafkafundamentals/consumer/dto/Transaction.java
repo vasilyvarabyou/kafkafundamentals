@@ -1,6 +1,7 @@
-package com.example.kafkafundamentals.dto;
+package com.example.kafkafundamentals.consumer.dto;
 
 import java.time.LocalDateTime;
+
 import lombok.Builder;
 
 @Builder

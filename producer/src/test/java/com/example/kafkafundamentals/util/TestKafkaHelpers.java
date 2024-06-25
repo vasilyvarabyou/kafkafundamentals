@@ -1,11 +1,13 @@
 package com.example.kafkafundamentals.util;
 
 import java.util.Properties;
+
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import com.example.kafkafundamentals.dto.Transaction;
+
+import com.example.kafkafundamentals.producer.dto.Transaction;
 import com.example.kafkafundamentals.serdeser.JsonDeserializer;
 
 public class TestKafkaHelpers {

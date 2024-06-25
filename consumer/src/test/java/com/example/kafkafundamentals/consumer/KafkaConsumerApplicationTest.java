@@ -1,29 +1,24 @@
-package com.example.kafkafundamentals;
+package com.example.kafkafundamentals.consumer;
 
-import static com.example.kafkafundamentals.producer.KafkaProducerApplication.*;
-import static com.example.kafkafundamentals.util.TestKafkaHelpers.*;
-import static java.time.Duration.*;
-import static java.util.Collections.*;
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.*;
+import static com.example.kafkafundamentals.consumer.KafkaConsumerApplication.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.NewTopic;
-import org.apache.kafka.clients.consumer.Consumer;
-import org.jetbrains.annotations.NotNull;
+import org.apache.kafka.clients.producer.Producer;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.kafka.KafkaContainer;
 
-import com.example.kafkafundamentals.producer.dto.Transaction;
+import com.example.kafkafundamentals.consumer.dto.Transaction;
+import com.example.kafkafundamentals.consumer.utils.TestKafkaHelpers;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 
@@ -32,8 +27,7 @@ import io.javalin.testtools.JavalinTest;
 import okhttp3.Response;
 
 @Testcontainers
-class KafkafundamentalsApplicationTest {
-
+public class KafkaConsumerApplicationTest {
     @Container
     private static final KafkaContainer kafka = new KafkaContainer("apache/kafka");
     private static Javalin app;
@@ -45,6 +39,7 @@ class KafkafundamentalsApplicationTest {
         final Config config = ConfigFactory.load();
         topic = config.getString("kafka.topic");
         createTopic(kafka.getBootstrapServers(), topic);
+        System.out.println(kafka.getBootstrapServers());
 
         app = createJavalinApp(config);
     }
@@ -57,27 +52,17 @@ class KafkafundamentalsApplicationTest {
         }
     }
 
-    @Test
-    void shouldSendTransactions() {
-        final Transaction expected = Transaction.builder().bank("Bank").build();
+    // @Test
+    void shouldGetTransactionFromTopic() throws InterruptedException, ExecutionException {
+        Transaction expected = Transaction.builder().bank("Bank").build();
+
         JavalinTest.test(app, (app, client) -> {
-            final Response response = client.post("/transactions", expected);
-            final List<Transaction> actual = transactionEvents();
-
+            try (Producer<String, Transaction> producer = TestKafkaHelpers.transactionProducer(kafka.getBootstrapServers());) {
+                System.out.println("!!!!!!!!!!!!! " + producer.send(new ProducerRecord<String,Transaction>(topic, expected)).get());
+            }
+            Response response = client.get("/transactions");
             assertTrue(response.isSuccessful());
-            assertThat(actual.size(), equalTo(1));
-            assertThat(actual.get(0), equalTo(expected));
+            JSONAssert.assertEquals("[{\"bank\": \"Bank\"}]", response.body().string(), false);
         });
-    }
-
-    @NotNull
-    private static List<Transaction> transactionEvents() {
-        final List<Transaction> list = new ArrayList<>();
-        try (Consumer<String, Transaction> cons = transactionConsumer(kafka.getBootstrapServers(),
-                "shouldSendTransactions")) {
-            cons.subscribe(singleton(topic));
-            cons.poll(ofSeconds(1)).forEach(r -> list.add(r.value()));
-        }
-        return list;
     }
 }

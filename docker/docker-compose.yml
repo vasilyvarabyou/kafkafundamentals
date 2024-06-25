@@ -22,13 +22,23 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
-  app:
+  producer:
     build:
-      context: ..
-      dockerfile: docker/Dockerfile
+      context: producer
+      dockerfile: Dockerfile
     environment:
       KAFKA_BOOTSTRAP_SERVERS: "broker:9092"
     ports:
       - "8080:8080"
+    depends_on:
+      - broker
+  consumer:
+    build:
+      context: consumer
+      dockerfile: Dockerfile
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: "broker:9092"
+    ports:
+      - "8081:8080"
     depends_on:
       - broker

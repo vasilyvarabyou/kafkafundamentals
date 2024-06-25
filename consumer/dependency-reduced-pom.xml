@@ -2,28 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.example.kafkafundamentals</groupId>
-  <artifactId>kafka-producer</artifactId>
-  <name>producer</name>
+  <artifactId>consumer</artifactId>
+  <name>kafkafundamentals-consumer</name>
   <version>0.0.1-SNAPSHOT</version>
-  <description>kafka producer</description>
+  <description>kafkafundamentals consumer</description>
   <build>
     <finalName>app</finalName>
     <plugins>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.10.1</version>
-        <configuration>
-          <source>${maven.compiler.source}</source>
-          <target>${maven.compiler.target}</target>
-          <annotationProcessorPaths>
-            <path>
-              <groupId>org.projectlombok</groupId>
-              <artifactId>lombok</artifactId>
-              <version>${lombok.version}</version>
-            </path>
-          </annotationProcessorPaths>
-        </configuration>
-      </plugin>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.0.0-M5</version>
@@ -47,7 +32,7 @@
         <configuration>
           <transformers>
             <transformer>
-              <mainClass>com.example.kafkafundamentals.producer.KafkaProducerApplication</mainClass>
+              <mainClass>com.example.kafkafundamentals.consumer.KafkaConsumerApplication</mainClass>
             </transformer>
           </transformers>
           <filters>
@@ -65,12 +50,6 @@
     </plugins>
   </build>
   <dependencies>
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <version>1.18.32</version>
-      <scope>provided</scope>
-    </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
@@ -162,7 +141,6 @@
     </dependencies>
   </dependencyManagement>
   <properties>
-    <lombok.version>1.18.32</lombok.version>
     <maven.compiler.target>17</maven.compiler.target>
     <maven.compiler.source>17</maven.compiler.source>
   </properties>

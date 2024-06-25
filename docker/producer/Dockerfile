@@ -1,4 +1,4 @@
-FROM azul/zulu-openjdk-alpine:17.0.11-jre
+FROM azul/zulu-openjdk-alpine:17-jre
 
 COPY app.jar /usr/src/app.jar
 

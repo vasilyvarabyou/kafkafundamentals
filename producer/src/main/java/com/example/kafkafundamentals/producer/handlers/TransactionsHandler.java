@@ -1,15 +1,17 @@
-package com.example.kafkafundamentals.handlers;
+package com.example.kafkafundamentals.producer.handlers;
 
-import static java.util.Map.of;
-import static io.javalin.http.HttpStatus.ACCEPTED;
-import static io.javalin.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static lombok.AccessLevel.PRIVATE;
+import static io.javalin.http.HttpStatus.*;
+import static java.util.Map.*;
+import static lombok.AccessLevel.*;
 
 import java.util.concurrent.ExecutionException;
+
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.jetbrains.annotations.NotNull;
-import com.example.kafkafundamentals.dto.Transaction;
+
+import com.example.kafkafundamentals.producer.dto.Transaction;
+
 import io.javalin.http.Context;
 import lombok.RequiredArgsConstructor;
 

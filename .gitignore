@@ -1,7 +1,7 @@
 HELP.md
 target/
-docker/producer/
-docker/consumer/
+docker/producer/*.jar
+docker/consumer/*.jar
 **/target/
 
 ### STS ###

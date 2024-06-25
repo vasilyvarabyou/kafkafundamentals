@@ -1,15 +1,17 @@
-package com.example.kafkafundamentals;
+package com.example.kafkafundamentals.producer;
 
 import org.apache.kafka.clients.producer.Producer;
 import org.jetbrains.annotations.NotNull;
-import com.example.kafkafundamentals.dto.Transaction;
-import com.example.kafkafundamentals.handlers.KafkaHelpers;
-import com.example.kafkafundamentals.handlers.TransactionsHandler;
+
+import com.example.kafkafundamentals.producer.dto.Transaction;
+import com.example.kafkafundamentals.producer.handlers.KafkaHelpers;
+import com.example.kafkafundamentals.producer.handlers.TransactionsHandler;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
+
 import io.javalin.Javalin;
 
-public class KafkafundamentalsApplication {
+public class KafkaProducerApplication {
 
     public static void main(String[] args) {
         createJavalinApp(ConfigFactory.load()).start(8080);
