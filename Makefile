@@ -2,7 +2,7 @@
 
 # Define variables
 MVN = mvn
-DOCKER_COMPOSE = docker-compose
+DOCKER_COMPOSE = docker compose
 DOCKER = docker
 DOCKERFILE_DIR = docker
 PRODUCER_DIR = producer
