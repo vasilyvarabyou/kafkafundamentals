@@ -27,6 +27,7 @@ public class TransactionsHandler {
         final Iterable<ConsumerRecord<String, Transaction>> records = consumer.poll(ofMillis(100));
         final List<Transaction> result = stream(records.spliterator(), false).map(r -> r.value()).collect(toList());
         ctx.json(result).status(result.isEmpty() ? NO_CONTENT : OK);
+        consumer.commitAsync();
     }
 
     public static TransactionsHandler create(final Consumer<String, Transaction> consumer) {
